@@ -23,6 +23,7 @@ app.use(bodyParser.json());
 
 //   next();
 // });
+app.use(express.static(path.join("public")));
 
 app.use("/api/events", eventsRoutes);
 app.use("/api/users", usersRoutes);
@@ -32,7 +33,7 @@ app.use("/api/users", usersRoutes);
 //   throw error;
 // });
 
-// app.use(express.static(path.join("public")));
+//
 app.use((req, res, next) => {
   res.sendFile(path.resolve(__dirname, "public", "index.html"));
 });
