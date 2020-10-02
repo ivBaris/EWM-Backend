@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/static/css/main.b62edf0d.chunk.css",
+    "main.js": "/static/js/main.673ac10d.chunk.js",
+    "main.js.map": "/static/js/main.673ac10d.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.173ec46f.js",
+    "runtime-main.js.map": "/static/js/runtime-main.173ec46f.js.map",
+    "static/js/2.d89a5fcd.chunk.js": "/static/js/2.d89a5fcd.chunk.js",
+    "static/js/2.d89a5fcd.chunk.js.map": "/static/js/2.d89a5fcd.chunk.js.map",
+    "./service-worker.js": "/./service-worker.js",
+    "index.html": "/index.html",
+    "precache-manifest.007690c4eb9770c5b3e44ee7801f2e7d.js": "/precache-manifest.007690c4eb9770c5b3e44ee7801f2e7d.js",
+    "static/css/main.b62edf0d.chunk.css.map": "/static/css/main.b62edf0d.chunk.css.map",
+    "static/js/2.d89a5fcd.chunk.js.LICENSE.txt": "/static/js/2.d89a5fcd.chunk.js.LICENSE.txt",
+    "static/media/Logo.png": "/static/media/Logo.c98ff47c.png",
+    "static/media/StartPage.scss": "/static/media/maddi-bazzocco-waNAJOI7Jz8-unsplash.8947ef88.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.173ec46f.js",
+    "static/js/2.d89a5fcd.chunk.js",
+    "static/css/main.b62edf0d.chunk.css",
+    "static/js/main.673ac10d.chunk.js"
+  ]
+}
