@@ -1,0 +1,8 @@
+{
+  "env": {
+    "DB_USER": "ewmAdmin",
+    "DB_PASSWORD": "6cwBrg3VOo8BRkCW",
+    "DB_NAME": "ewm",
+    "JWT": "eventWM-secretkey"
+  }
+}

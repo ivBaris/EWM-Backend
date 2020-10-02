@@ -24,7 +24,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/events", eventsRoutes); // => /api/places...
+app.use("/api/events", eventsRoutes);
 app.use("/api/users", usersRoutes);
 
 app.use((req, res, next) => {
@@ -42,7 +42,7 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    `mongodb+srv://ewmAdmin:6cwBrg3VOo8BRkCW@cluster0.l8dzo.mongodb.net/ewm?retryWrites=true&w=majority`
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.l8dzo.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
   )
   .then(() => {
     app.listen(5000);

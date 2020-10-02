@@ -8,7 +8,13 @@ const User = require("../models/user");
 const getUserById = async (req, res, next) => {
   const userId = req.params.uid;
 
-  const user = await User.findById({ _id: userId }).select("-password").exec();
+  let user;
+  try {
+    user = await User.findById({ _id: userId }).select("-password").exec();
+  } catch (err) {
+    const error = new HttpError("Benutzer nicht gefunden", 500);
+    return next(error);
+  }
 
   res.json({ user: user.toObject({ getters: true }) });
 };
@@ -16,7 +22,13 @@ const getUserById = async (req, res, next) => {
 const getFriends = async (req, res, next) => {
   const userId = req.params.uid;
 
-  const user = await User.findById({ _id: userId });
+  let user;
+  try {
+    user = await User.findById({ _id: userId });
+  } catch (err) {
+    const error = new HttpError("Benutzer nicht gefunden", 500);
+    return next(error);
+  }
 
   const friends = user.friends;
 
@@ -133,7 +145,7 @@ const signup = async (req, res, next) => {
         name: createdUser.name,
         friends: createdUser.friends,
       },
-      "eventWM-secretkey",
+      process.env.JWT,
       { expiresIn: "2 days" }
     );
   } catch (err) {
@@ -199,7 +211,7 @@ const login = async (req, res, next) => {
         name: ewmUser.name,
         friends: ewmUser.friends,
       },
-      "eventWM-secretkey",
+      process.env.JWT,
       { expiresIn: "2 days" }
     );
   } catch (err) {
