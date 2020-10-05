@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const eventsRoutes = require("./routes/event-routes");
 const usersRoutes = require("./routes/users-routes");
 const HttpError = require("./models/http-error");
+const webpush = require("web-push");
 
 const app = express();
 
@@ -39,6 +40,13 @@ app.use((error, req, res, next) => {
   res.status(error.code || 5000);
   res.json({ message: error.message || "An unknown error occurred!" });
 });
+
+webpush.setGCMAPIKey(process.env.GOOGLE_API_KEY);
+webpush.setVapidDetails(
+  "mailto: ibarisic.iv@gmail.com",
+  process.env.PUBLIC_VAPID_KEY,
+  process.env.PRIVATE_VAPID_KEY
+);
 
 mongoose
   .connect(

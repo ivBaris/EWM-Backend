@@ -3,6 +3,9 @@
     "DB_USER": "ewmAdmin",
     "DB_PASSWORD": "6cwBrg3VOo8BRkCW",
     "DB_NAME": "ewm",
-    "JWT": "eventWM-secretkey"
+    "JWT": "eventWM-secretkey",
+    "PUBLIC_VAPID_KEY": "BKkzdu1noK_Q8XSyHQufHi1lBoIw8IOB91HHpN3fjwrPaoIDNnK-NWIfc3OVQxX_D-fnc2B6cx7Cu8X1q0pe0tI",
+    "PRIVATE_VAPID_KEY": "GLLiLUaF3XSw2Z18mgaADAxgnB2sSP7KLcPw7UpTt7g",
+    "GOOGLE_API_KEY": "AIzaSyCKnkgGxg5SFRM2mYk-0FkecrdJc8cmkBk"
   }
 }

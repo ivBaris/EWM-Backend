@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
 const mongoose = require("mongoose");
+const webpush = require("web-push");
 
 const HttpError = require("../models/http-error");
 const Event = require("../models/event");
@@ -144,6 +145,18 @@ const createEvent = async (req, res, next) => {
   res.status(201).json({ event: createdEvent });
 };
 
+const pushNotification = async (req, res, next) => {
+  subscription = req.body;
+  console.log(subscription);
+  res.sendStatus(201);
+  webpush
+    .sendNotification(
+      subscription,
+      JSON.stringify({ title: "test test", body: "es hat funktioniert" })
+    )
+    .catch((e) => console.log(e.stack));
+};
+
 const updateEvent = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -269,3 +282,4 @@ exports.updateEvent = updateEvent;
 exports.addParticipant = addParticipant;
 exports.deleteEvent = deleteEvent;
 exports.removeParticipant = removeParticipant;
+exports.pushNotification = pushNotification;

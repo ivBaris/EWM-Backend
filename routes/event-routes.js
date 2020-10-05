@@ -18,6 +18,8 @@ router.post(
   eventsControllers.createEvent
 );
 
+router.post("/notify", eventsControllers.pushNotification);
+
 router.patch(
   "/event/:eid/edit",
   [check("title").not().isEmpty(), check("description").isLength({ min: 5 })],
