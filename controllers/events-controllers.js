@@ -147,7 +147,7 @@ const createEvent = async (req, res, next) => {
 
 const pushNotification = async (req, res, next) => {
   const { title, subscription } = req.body;
-  console.log(subscription);
+  console.log({ subscription });
   res.sendStatus(201);
   webpush
     .sendNotification(
