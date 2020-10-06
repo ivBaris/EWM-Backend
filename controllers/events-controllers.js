@@ -146,13 +146,13 @@ const createEvent = async (req, res, next) => {
 };
 
 const pushNotification = async (req, res, next) => {
-  subscription = req.body;
+  const { title, subscription } = req.body;
   console.log(subscription);
   res.sendStatus(201);
   webpush
     .sendNotification(
       subscription,
-      JSON.stringify({ title: "test test", body: "es hat funktioniert" })
+      JSON.stringify({ title: title, body: "Event wurde erfolgreich erzeugt" })
     )
     .catch((e) => console.log(e.stack));
 };
