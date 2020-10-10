@@ -9,8 +9,8 @@ router.get("/:uid/created-events", eventsControllers.getCreadtedEventsByUserId);
 router.get("/:uid/participant", eventsControllers.getParticipantEventByUserId);
 router.get("/:uid", eventsControllers.getPotentialEventsByUserId);
 router.get("/event/:eid", eventsControllers.getEventById);
-router.put("/event/:eid", eventsControllers.addParticipant);
-router.patch("/event/:eid", eventsControllers.removeParticipant);
+router.put("/event/:eid", eventsControllers.addParticipation);
+router.patch("/event/:eid", eventsControllers.removeParticipation);
 
 router.post(
   "/",

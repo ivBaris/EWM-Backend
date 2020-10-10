@@ -35,7 +35,7 @@ const getFriends = async (req, res, next) => {
   res.json({ friends: friends.toObject({ getters: true }) });
 };
 
-const updateFriends = async (req, res, next) => {
+const updateFriendsList = async (req, res, next) => {
   const userId = req.params.uid;
   const { email } = req.body;
 
@@ -81,8 +81,8 @@ const updateFriends = async (req, res, next) => {
 };
 
 const signup = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
+  const validationErrors = validationResult(req);
+  if (!validationErrors.isEmpty()) {
     return next(new HttpError("Bitte überprüfe deine Eingabe", 422));
   }
   const { name, email, password } = req.body;
@@ -120,7 +120,6 @@ const signup = async (req, res, next) => {
   const createdUser = new User({
     name,
     email,
-    image: "https://robohash.org/",
     password: passwordHash,
     events: [],
     friends: [],
@@ -233,6 +232,6 @@ const login = async (req, res, next) => {
 
 exports.getUserById = getUserById;
 exports.getFriends = getFriends;
-exports.updateFriends = updateFriends;
+exports.updateFriendsList = updateFriendsList;
 exports.signup = signup;
 exports.login = login;

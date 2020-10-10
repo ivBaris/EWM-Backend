@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/:uid", usersController.getUserById);
 router.get("/:uid/friends", usersController.getFriends);
-router.patch("/:uid/friends", usersController.updateFriends);
+router.patch("/:uid/friends", usersController.updateFriendsList);
 
 router.post(
   "/signup",

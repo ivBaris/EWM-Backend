@@ -9,17 +9,16 @@ const User = require("../models/user");
 const getCreadtedEventsByUserId = async (req, res, next) => {
   const userId = req.params.uid;
 
-  let events;
-
+  let userEvents;
   try {
-    events = await Event.find({ creatorId: userId });
+    userEvents = await User.findById(userId).populate("events");
   } catch (err) {
     const error = new HttpError("Event suche Fehlgeschlagen", 500);
     return next(error);
   }
 
   res.json({
-    events: events.map((event) => event.toObject({ getters: true })),
+    events: userEvents.events.map((event) => event.toObject({ getters: true })),
   });
 };
 
@@ -97,7 +96,6 @@ const createEvent = async (req, res, next) => {
     location,
     date,
     creatorId,
-    image,
     potParticipants,
   } = req.body;
 
@@ -131,12 +129,12 @@ const createEvent = async (req, res, next) => {
   }
 
   try {
-    const sess = await mongoose.startSession();
-    sess.startTransaction();
-    await createdEvent.save({ session: sess });
+    const sessionStart = await mongoose.startSession();
+    sessionStart.startTransaction();
+    await createdEvent.save({ session: sessionStart });
     user.events.push(createdEvent);
-    await user.save({ session: sess });
-    await sess.commitTransaction();
+    await user.save({ session: sessionStart });
+    await sessionStart.commitTransaction();
   } catch (err) {
     const error = new HttpError("Erzeugung des Events ist fehlgeschlagen", 500);
     return next(error);
@@ -162,7 +160,7 @@ const updateEvent = async (req, res, next) => {
     return next(new HttpError("Bitte überprüfe deine Eingabe", 422));
   }
 
-  const { title, description, date } = req.body;
+  const { title, description, date, potParticipants } = req.body;
   const eventId = req.params.eid;
 
   let event;
@@ -176,6 +174,7 @@ const updateEvent = async (req, res, next) => {
   event.title = title;
   event.description = description;
   event.date = date;
+  event.potParticipants = potParticipants;
 
   try {
     await event.save();
@@ -187,22 +186,25 @@ const updateEvent = async (req, res, next) => {
   res.status(200).json({ event: event.toObject({ getters: true }) });
 };
 
-const addParticipant = async (req, res, next) => {
-  const { participants } = req.body;
+const addParticipation = async (req, res, next) => {
+  const { participant } = req.body;
   const eventId = req.params.eid;
 
   let event;
   try {
     event = await Event.findById(eventId);
   } catch (err) {
-    const error = new HttpError("Update Fehlgeschlagen", 500);
+    const error = new HttpError("Hat nicht funktioniert", 500);
     return next(error);
   }
 
-  event.participants.push(participants);
-
   try {
+    const sessionStart = await mongoose.startSession();
+    sessionStart.startTransaction();
+    event.participants.push(participant);
+    event.potParticipants.pull(participant);
     await event.save();
+    await sessionStart.commitTransaction();
   } catch (err) {
     const error = new HttpError(
       "Participant hinzufügen ist fehlgeschlagen",
@@ -214,7 +216,7 @@ const addParticipant = async (req, res, next) => {
   res.status(200).json({ event: event.toObject({ getters: true }) });
 };
 
-const removeParticipant = async (req, res, next) => {
+const removeParticipation = async (req, res, next) => {
   const { participants } = req.body;
   const eventId = req.params.eid;
 
@@ -227,6 +229,7 @@ const removeParticipant = async (req, res, next) => {
   }
 
   event.participants.pull(participants);
+  event.potParticipants.push(participants);
 
   try {
     await event.save();
@@ -258,12 +261,12 @@ const deleteEvent = async (req, res, next) => {
   }
 
   try {
-    const sess = await mongoose.startSession();
-    sess.startTransaction();
-    await event.remove({ session: sess });
+    const sessionStart = await mongoose.startSession();
+    sessionStart.startTransaction();
+    await event.remove({ session: sessionStart });
     event.creatorId.events.pull(event);
-    await event.creatorId.save({ session: sess });
-    await sess.commitTransaction();
+    await event.creatorId.save({ session: sessionStart });
+    await sessionStart.commitTransaction();
   } catch (err) {
     const error = new HttpError("Event konnte nicht glöscht werden", 500);
     return next(error);
@@ -278,7 +281,7 @@ exports.getPotentialEventsByUserId = getPotentialEventsByUserId;
 exports.getEventById = getEventById;
 exports.createEvent = createEvent;
 exports.updateEvent = updateEvent;
-exports.addParticipant = addParticipant;
+exports.addParticipation = addParticipation;
 exports.deleteEvent = deleteEvent;
-exports.removeParticipant = removeParticipant;
+exports.removeParticipation = removeParticipation;
 exports.pushNotification = pushNotification;
